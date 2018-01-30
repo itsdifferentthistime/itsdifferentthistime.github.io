@@ -519,7 +519,25 @@
 					</div>
 				</div>
 			</div>
-			<div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">...</div>
+			<div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
+				<div class="container">
+					<div class="col-12">
+						<div class="embed-responsive embed-responsive-16by9">
+							<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/cpF5MrgXXkc?rel=0"></iframe>
+						</div>
+						<br>
+						<p>"It's Different This Time" is both a music composition and web application that generates musical instruction for performers via guide-tones and traditional music notation in real time. It is built with <a href="https://tonejs.github.io/">Tone.js</a>, a JavaScript library built on top of the Web Audio API, and front-end framework, <a href="https://getbootstrap.com/">Bootstrap</a>.</p>
+						<br>
+						<h3>Intent</h3>
+						<p> This piece is intended to deliver note values to performers, but musical characteristics, such as instrumentation, rhythm,  timbre, dynamics, and others are left entirely up to whoever takes on this piece.</p>
+						<br>
+						<h3>Settings Tab</h3>
+						<p>One of the main features of “It’s Different This Time” is the user's ability to modify parameters of its algorithm and share new versions of the piece with performers via URL. As shown in the settings tab, a user may rank scale degrees, keys the piece may modulate to, adjust bpm, and decide how many measures occur between key changes. After adjusting the piece to the desired specifications, the user can generate a link to share with performers.</p>
+						<p>In order to achieve the click-and-drag behavior necessary for the scale degree and key change ranking, the JavaScript library, <a href="https://github.com/RubaXa/Sortable">Sortable</a>, was utilized.</p>
+						
+					</div>
+				</div>			
+			</div>
 			<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">.
 				<div class="container">
 					<div class="row justify-content-center">
