@@ -1,11 +1,30 @@
+function initialSetup()
+{
+	initial.setup();
+	weighted.listsSetup();
+	current.keySetup();	
+	outlet(0, "bpm",initial.bpm);
+};
+
+function customSetup(newUrl)
+{
+	initial.setUrl(newUrl);
+	initial.setup();
+	weighted.listsSetup();
+	current.keySetup();	
+	outlet(0, "bpm",initial.bpm);
+};
+
 var initial = {
 	scaleDegreeRankings: ["R",1,3,5,7,2,4,6],
 	keyChangeRankings: [6,1,5,4,3,2],
 	bpm: 280,
 	measuresPerKeyChange: 20,
 	seed: "42",
+	url: "",
 	setup: function()
 	{
+		
 		newSdr = getQueryVariable("sdr");
 		
 		//newSdr will be false if there are no variables in the url
@@ -21,12 +40,16 @@ var initial = {
 		this.bpm = getQueryVariable("bpm");
 		this.measuresPerKeyChange = getQueryVariable("mpk");
 		this.seed = getQueryVariable("seed");
+	}, 
+	setUrl: function(url)
+	{
+		this.url = url;
 	}
 };
 
 function getQueryVariable(variable)
 {
-       var query = window.location.search.substring(1);
+       var query = initial.url;
        var vars = query.split("&");
        for (var i=0;i<vars.length;i++) {
                var pair = vars[i].split("=");
@@ -40,7 +63,7 @@ function getQueryVariable(variable)
 var scale = {
 	major: [2,2,1,2,2,2,1],
 	minor: [2,1,2,2,1,3,1],
-	chromatic: ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
+	chromatic: [23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]
 };
 
 //Weighted Lists for Random Key Changing and Note Selection
@@ -120,7 +143,7 @@ var current = {
 	{
 		var randomIndex = Math.seededRandom(0, 12);
 		var initialTonic = scale.chromatic[randomIndex];
-		console.log(randomIndex);
+		//console.log(randomIndex);
 		this.setNewKey(initialTonic, "major");
 	},
 	//CURRENT NOTE
@@ -142,6 +165,10 @@ var current = {
 	measureGetsReset: function()
 	{
 		this.measure = 0;
+	},
+	outputKeyToMax: function()
+	{		
+		outlet(0, "note", this.key);
 	}
 };
 
@@ -178,18 +205,19 @@ Math.seededRandom = function(max, min) {
 
 
 //Create a loop
-var thisPiece = new Tone.Loop(function(time)
+function nextMeasure()
 {
 	current.measureBecomesThisMeasure();	
-	hideOldNote();
-	playAndDisplayNewNote(time);
-	console.log(current.note);
+	//hideOldNote();
+	//playAndDisplayNewNote(time);
+	//console.log(current.note);
 	
 	if (thisMeasureIsRight(current.measure)) {
 		current.keyGetsChanged();
+		current.outputKeyToMax();
 		current.measureGetsReset();
 	}	
-}, "1n");
+};
 
 function hideOldNote()
 {
@@ -211,31 +239,27 @@ function playAndDisplayNewNote(time)
 };
 //repeat until time to change keys
 //if time to change key, set the new key based on the seeded probability
-initial.setup();
-weighted.listsSetup();
-current.keySetup();
+
 
 //setup Tone.js
 //pass in the audio context
-var context = new AudioContext();
-Tone.setContext(context);
+//var context = new AudioContext();
+//Tone.setContext(context);
 //on iOS, the context will be started on the first valid user action on the #playButton element
 //StartAudioContext(context, "#playButton");
-StartAudioContext(Tone.context, '#playButton');
+//StartAudioContext(Tone.context, '#playButton');
 
 //Tone.context.latencyHint = 'playback';
 
 
 //create a synth and connect it to the master output (your speakers)
-var guideTone = new Tone.Synth();
-var volume = new Tone.Volume(0);
-guideTone.chain(volume, Tone.Master);
+//var guideTone = new Tone.Synth();
+//var volume = new Tone.Volume(0);
+//guideTone.chain(volume, Tone.Master);
 
-Tone.Transport.bpm.value = initial.bpm;
+
 
 //play the piece
-thisPiece.start(0); 
-
 
 function toggleSound() {				
 	var currentState = document.getElementById("soundOnOff").innerHTML;
