@@ -1,7 +1,7 @@
 var initial = {
 	scaleDegreeRankings: ["R",1,3,5,7,2,4,6],
 	keyChangeRankings: [6,1,5,4,3,2],
-	bpm: 280,
+	bpm: 70,
 	measuresPerKeyChange: 20,
 	seed: "42",
 	setup: function()
